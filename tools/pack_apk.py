@@ -17,8 +17,8 @@ import zlib
 PACKAGE = "com.pirpir.game"
 ACTIVITY = "com.pirpir.game.MainActivity"
 LABEL = "Glowbird"
-VERSION_CODE = 4
-VERSION_NAME = "1.3"
+VERSION_CODE = 5
+VERSION_NAME = "1.4"
 MIN_SDK = 24
 TARGET_SDK = 34
 
@@ -32,6 +32,7 @@ ATTR = {
     "exported": 0x01010010, "screenOrientation": 0x0101001E, "configChanges": 0x0101001F,
     "minSdkVersion": 0x0101020C, "versionCode": 0x0101021B, "versionName": 0x0101021C,
     "targetSdkVersion": 0x01010270, "hardwareAccelerated": 0x010102D3,
+    "authorities": 0x01010018, "grantUriPermissions": 0x0101001B,
 }
 
 T_REF, T_STRING, T_DEC, T_HEX, T_BOOL = 0x01, 0x03, 0x10, 0x11, 0x12
@@ -156,6 +157,13 @@ def manifest():
     x.end("category")
     x.end("intent-filter")
     x.end("activity")
+    x.start("provider", [
+        (A, "name", T_STRING, PACKAGE + ".ShareProvider"),
+        (A, "exported", T_BOOL, 0),
+        (A, "authorities", T_STRING, PACKAGE + ".share"),
+        (A, "grantUriPermissions", T_BOOL, 0xFFFFFFFF),
+    ])
+    x.end("provider")
     x.end("application")
     x.end("manifest")
     return x.build()

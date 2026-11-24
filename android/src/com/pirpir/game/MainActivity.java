@@ -1,11 +1,15 @@
 package com.pirpir.game;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,6 +18,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class MainActivity extends Activity {
     private WebView web;
@@ -97,6 +103,30 @@ public class MainActivity extends Activity {
             try {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 if (v != null) v.vibrate(ms);
+            } catch (Throwable ignored) { }
+        }
+
+        @JavascriptInterface
+        public void shareImage(String base64Png, final String text) {
+            try {
+                byte[] data = Base64.decode(base64Png, Base64.DEFAULT);
+                File dir = new File(getCacheDir(), "share");
+                dir.mkdirs();
+                FileOutputStream out = new FileOutputStream(new File(dir, "glowbird.png"));
+                out.write(data);
+                out.close();
+                final Uri uri = Uri.parse("content://" + ShareProvider.AUTHORITY + "/glowbird.png");
+                runOnUiThread(new Runnable() { public void run() {
+                    Intent send = new Intent(Intent.ACTION_SEND);
+                    send.setType("image/png");
+                    send.putExtra(Intent.EXTRA_STREAM, uri);
+                    send.putExtra(Intent.EXTRA_TEXT, text);
+                    send.setClipData(ClipData.newRawUri("", uri));
+                    send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    Intent chooser = Intent.createChooser(send, null);
+                    chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(chooser);
+                } });
             } catch (Throwable ignored) { }
         }
 

@@ -4,17 +4,33 @@ Mobil için tek dokunuşlu, neon/synthwave temalı bir uçma oyunu. Bol parçac�
 zoom vuruşları ve yavaş çekim ölüm anı var.
 
 **İçerik**
-- Görevler: aynı anda 3 görev açık olur. Tamamlanan görev kristal kazandırır ve yerine daha zor bir yenisi gelir.
+- 4 dünya, her 25 puanda değişir:
+  - Neon Şehir
+  - Buz Zirveleri: kar yağar, daha çok testere çıkar
+  - Yanardağ: yerden ateş topları fırlar
+  - Derin Uzay: yerçekimi daha düşük
+- Boss: belli puanlarda gelir, lazer ve testere atar. 15 saniye dayanırsan büyük ödül verir.
 - Engeller:
-  - hareketli sütunlar (12+)
-  - dönen testereler (6+)
-  - açılıp kapanan kapılar (15+)
-  - yanıp sönen lazerler (20+)
+  - hareketli sütunlar
+  - dönen testereler
+  - açılıp kapanan kapılar
+  - kapanan sütunlar
+  - yanıp sönen lazerler
+  - karşıdan gelen kuş sürüsü
+  - ters yerçekimi bölgesi
 - Güçlendirmeler:
-  - Kalkan: bir çarpmayı emer
-  - Mıknatıs: 7 saniye boyunca kristalleri çeker
-- Kristallerle açılan 6 karakter, kıl payı bonusu, madalyalar
-- 20 dil, varsayılan İngilizce
+  - kalkan
+  - mıknatıs
+  - ağır çekim
+  - küçülme
+  - x2 kristal
+- Kombo: üst üste kıl payı geçtikçe puan çarpanı x5'e kadar çıkar.
+- Görevler: aynı anda 3 görev açık olur, tamamlanınca kristal verir.
+- Günlük ödül: 7 günlük seri.
+- Synthwave müzik: oyunun içinde üretilir, hız arttıkça temposu artar.
+- 10 karakter (bazılarının özel iz efekti var) ve 7 şapka.
+- İstatistik ekranı, son anları tekrar izleme, skor kartı paylaşma.
+- 20 dil, varsayılan İngilizce.
 
 **Dosyalar**
 - `game/index.html`: oyunun tamamı (tarayıcıda da açılıp oynanabilir)

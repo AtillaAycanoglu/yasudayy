@@ -7,3 +7,4 @@ zoom vuruşları, yavaş çekim ölüm anı, kıl payı bonusu, kristal toplama 
 - `android/` — oyunu tam ekran WebView içinde açan Android aktivitesi
 - `tools/build_apk.sh` — Android SDK gerektirmeden `dist/pirpir.apk` üretir (JDK + Node/Playwright + Python 3 yeterli)
 - `dist/pirpir.apk` — hazır APK (Android 7.0+)
+- `game/i18n.js` — 20 dil (varsayılan İngilizce); yeni dil eklemek için bu dosyaya bir blok eklemek yeterli

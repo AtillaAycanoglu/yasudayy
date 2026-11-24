@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -82,6 +82,15 @@
   @keyframes wig{from{transform:rotate(-6deg) scale(1)}to{transform:rotate(6deg) scale(1.12)}}
   .hint{font-weight:900;font-size:22px;letter-spacing:.1em;text-shadow:0 3px 0 rgba(0,0,0,.4);animation:pulse 1s infinite,bob 1.2s ease-in-out infinite;margin-top:34vh}
   .hidden{display:none!important}
+  .btn{line-height:1.15}
+  .row .btn{font-size:min(20px,5vw);padding:16px 10px;white-space:nowrap}
+  .row .btn.ghost{flex:0 0 64px;font-size:22px}
+  .panel h2{font-size:min(30px,7.4vw)}
+  .langval{font-size:15px;color:var(--cyan);background:rgba(255,255,255,.08);border-radius:999px;padding:6px 12px}
+  .langs{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:56vh;overflow-y:auto;margin-bottom:14px;padding:2px;touch-action:pan-y}
+  .lang{border-radius:14px;background:rgba(255,255,255,.07);border:2px solid transparent;padding:12px 6px;font-weight:800;font-size:16px}
+  .lang.sel{border-color:var(--cyan);box-shadow:0 0 14px rgba(41,240,255,.45);color:var(--cyan)}
+  .title,.scores b,.chip b{direction:ltr;unicode-bidi:isolate}
 </style>
 </head>
 <body>
@@ -92,63 +101,75 @@
 <!-- MENU -->
 <div class="screen" id="menu">
   <h1 class="title pop" id="titleEl"></h1>
-  <div class="subtitle pop">NEON KANAT</div>
+  <div class="subtitle pop" data-i18n="subtitle"></div>
   <div class="stats pop"><div class="chip">🏆 <b id="menuBest">0</b></div><div class="chip">◆ <b id="menuGems" style="color:var(--cyan)">0</b></div></div>
-  <button class="btn big pop" id="playBtn">▶ OYNA</button>
+  <button class="btn big pop" id="playBtn" data-i18n="play"></button>
   <div class="row pop" style="width:min(92vw,330px)">
-    <button class="btn alt" id="skinBtn">KARAKTER</button>
+    <button class="btn alt" id="skinBtn" data-i18n="characters_btn"></button>
+    <button class="btn ghost" id="langBtn">🌐</button>
     <button class="btn ghost" id="setBtn">⚙</button>
   </div>
 </div>
 
 <!-- READY -->
-<div class="screen" id="ready"><div class="hint">DOKUN & UÇ!</div></div>
+<div class="screen" id="ready"><div class="hint" data-i18n="ready"></div></div>
 
 <!-- SKINS -->
 <div class="screen" id="skins">
   <div class="panel pop">
-    <h2>KARAKTERLER</h2>
+    <h2 data-i18n="characters"></h2>
     <div class="chip" style="display:inline-flex;margin-bottom:14px">◆ <b id="skinGems" style="color:var(--cyan)">0</b></div>
     <div class="skins" id="skinGrid"></div>
-    <button class="btn" id="skinBack">TAMAM</button>
+    <button class="btn" id="skinBack" data-i18n="ok"></button>
   </div>
 </div>
 
 <!-- SETTINGS -->
 <div class="screen" id="settings">
   <div class="panel pop">
-    <h2>AYARLAR</h2>
-    <div class="toggle" data-k="sound">Ses <div class="sw"></div></div>
-    <div class="toggle" data-k="vibe">Titreşim <div class="sw"></div></div>
-    <div class="toggle" data-k="shake">Ekran Sallanması <div class="sw"></div></div>
-    <div class="toggle" data-k="fx" style="border:0">Yoğun Efektler <div class="sw"></div></div>
-    <button class="btn" id="setBack" style="margin-top:16px">TAMAM</button>
+    <h2 data-i18n="settings"></h2>
+    <div class="toggle" data-k="sound"><span data-i18n="sound"></span> <div class="sw"></div></div>
+    <div class="toggle" data-k="vibe"><span data-i18n="vibration"></span> <div class="sw"></div></div>
+    <div class="toggle" data-k="shake"><span data-i18n="shake"></span> <div class="sw"></div></div>
+    <div class="toggle" data-k="fx"><span data-i18n="fx"></span> <div class="sw"></div></div>
+    <div class="toggle" id="langRow" style="border:0"><span data-i18n="language"></span> <span class="langval" id="langName"></span></div>
+    <button class="btn" id="setBack" style="margin-top:16px" data-i18n="ok"></button>
+  </div>
+</div>
+
+<!-- LANGUAGE -->
+<div class="screen" id="langs">
+  <div class="panel pop">
+    <h2 data-i18n="language"></h2>
+    <div class="langs" id="langGrid"></div>
+    <button class="btn" id="langBack" data-i18n="ok"></button>
   </div>
 </div>
 
 <!-- PAUSE -->
 <div class="screen" id="pause">
   <div class="panel pop">
-    <h2>DURAKLADI</h2>
-    <button class="btn big" id="resumeBtn">▶ DEVAM</button><br>
-    <button class="btn alt" id="quitBtn">ANA MENÜ</button>
+    <h2 data-i18n="paused"></h2>
+    <button class="btn big" id="resumeBtn" data-i18n="resume"></button><br>
+    <button class="btn alt" id="quitBtn" data-i18n="menu"></button>
   </div>
 </div>
 
 <!-- GAME OVER -->
 <div class="screen" id="over">
   <div class="panel pop">
-    <h2 id="overTitle">OYUN BİTTİ</h2>
-    <div id="newBest" class="newbest hidden">YENİ REKOR!</div>
+    <h2 id="overTitle" data-i18n="gameover"></h2>
+    <div id="newBest" class="newbest hidden" data-i18n="newbest"></div>
     <div class="medal" id="medal">★</div>
     <div id="medalName" style="font-weight:900;letter-spacing:.15em;font-size:13px;opacity:.85"></div>
-    <div class="scores"><div>SKOR<b id="finalScore">0</b></div><div>EN İYİ<b id="finalBest">0</b></div></div>
-    <div style="font-weight:800;margin:-6px 0 14px;opacity:.9">+◆ <span id="finalGems">0</span> kristal</div>
-    <button class="btn big" id="againBtn">↻ TEKRAR</button><br>
-    <button class="btn alt" id="homeBtn">ANA MENÜ</button>
+    <div class="scores"><div><span data-i18n="score"></span><b id="finalScore">0</b></div><div><span data-i18n="best"></span><b id="finalBest">0</b></div></div>
+    <div style="font-weight:800;margin:-6px 0 14px;opacity:.9">+◆ <span id="finalGems">0</span> <span data-i18n="crystals"></span></div>
+    <button class="btn big" id="againBtn" data-i18n="retry"></button><br>
+    <button class="btn alt" id="homeBtn" data-i18n="menu"></button>
   </div>
 </div>
 
+<script src="i18n.js"></script>
 <script>
 "use strict";
 /* =========================================================
@@ -168,12 +189,12 @@ let settings = Object.assign({sound:true, vibe:true, shake:true, fx:true}, store
 let skinIdx = store.get('skin', 0), unlocked = store.get('unlocked', [0]);
 
 const SKINS = [
-  {name:'Pırpır', body:'#ffd23d', belly:'#fff3b0', wing:'#ff8a3d', trail:'#ffd23d', cost:0},
+  {name:'Pirpir', body:'#ffd23d', belly:'#fff3b0', wing:'#ff8a3d', trail:'#ffd23d', cost:0},
   {name:'Neon',   body:'#29f0ff', belly:'#c8fcff', wing:'#8a5cff', trail:'#29f0ff', cost:15},
-  {name:'Şeker',  body:'#ff3d9a', belly:'#ffc2e0', wing:'#ffd23d', trail:'#ff3d9a', cost:40},
-  {name:'Zehir',  body:'#7dff4a', belly:'#e0ffcf', wing:'#1fae6b', trail:'#7dff4a', cost:80},
-  {name:'Gece',   body:'#4b3bb5', belly:'#a99bff', wing:'#1b1155', trail:'#a99bff', cost:150},
-  {name:'Altın',  body:'#ffb800', belly:'#fff', wing:'#fff1a8', trail:'#ffffff', cost:300, rainbow:true},
+  {name:'Candy',  body:'#ff3d9a', belly:'#ffc2e0', wing:'#ffd23d', trail:'#ff3d9a', cost:40},
+  {name:'Toxic',  body:'#7dff4a', belly:'#e0ffcf', wing:'#1fae6b', trail:'#7dff4a', cost:80},
+  {name:'Midnight',   body:'#4b3bb5', belly:'#a99bff', wing:'#1b1155', trail:'#a99bff', cost:150},
+  {name:'Gold',  body:'#ffb800', belly:'#fff', wing:'#fff1a8', trail:'#ffffff', cost:300, rainbow:true},
 ];
 
 // ---------- sizing ----------
@@ -316,7 +337,7 @@ function addScore(p){
   ring(bird.x, bird.y, 'rgba(255,210,61,.8)', 70, .4, 4);
   if(dist < 16){
     p.near = true; p.glow = 1;
-    popup(bird.x + 30, bird.y - 30, 'KIL PAYI!', '#ff3d9a', 26);
+    popup(bird.x + 30, bird.y - 30, tr('near'), '#ff3d9a', 26);
     SFX.near(); shake(7, .2); flash(.25, '#ff3d9a'); punch(.04);
   }
   if(score % 10 === 0){
@@ -325,7 +346,7 @@ function addScore(p){
     burst(W/2, H*.32, 40, ['#ffd23d','#ff3d9a','#29f0ff','#fff'], 420, {life:1, size:6, g:300, glow:true});
     SFX.best();
   } else shake(3, .12);
-  if(score > best && best > 0 && !newBestFlag){ newBestFlag = true; popup(W/2, H*.42, 'YENİ REKOR!', '#29f0ff', 36); flash(.3, '#29f0ff'); }
+  if(score > best && best > 0 && !newBestFlag){ newBestFlag = true; popup(W/2, H*.42, tr('newbest'), '#29f0ff', 36); flash(.3, '#29f0ff'); }
 }
 
 // ---------- update ----------
@@ -613,8 +634,29 @@ function drawBird(c, x, y, rot, flapT, sk, squash, dead){
 }
 
 // ---------- UI ----------
-const screens = ['menu','ready','skins','settings','pause','over'];
-function show(id){ screens.forEach(s => $(s).classList.toggle('on', s === id)); }
+const screens = ['menu','ready','skins','settings','langs','pause','over'];
+let curScreen = null, langReturn = 'menu';
+function show(id){ curScreen = id; screens.forEach(s => $(s).classList.toggle('on', s === id)); }
+
+// ---------- language ----------
+let lang = store.get('lang', 'en'); if(!LANGS[lang]) lang = 'en';
+function tr(k){ const L = LANGS[lang]; return (L && L[k] !== undefined) ? L[k] : LANGS.en[k]; }
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = LANGS[lang].rtl ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = tr(el.dataset.i18n); });
+  $('langName').textContent = LANGS[lang].native;
+}
+function buildLangs(){
+  const grid = $('langGrid'); grid.innerHTML = '';
+  Object.keys(LANGS).forEach(code => {
+    const b = document.createElement('div'); b.className = 'lang' + (code === lang ? ' sel' : ''); b.textContent = LANGS[code].native;
+    if(LANGS[code].rtl) b.dir = 'rtl';
+    b.addEventListener('click', () => { lang = code; store.set('lang', lang); applyLang(); buildLangs(); SFX.click(); vibe(10); });
+    grid.appendChild(b);
+  });
+}
+function openLangs(from){ langReturn = from; buildLangs(); show('langs'); const sel = $('langGrid').querySelector('.sel'); if(sel) sel.scrollIntoView({block:'center'}); }
 function refreshMenu(){ $('menuBest').textContent = best; $('menuGems').textContent = gems; }
 
 (function buildTitle(){ const el = $('titleEl'); 'PIRPIR'.split('').forEach((ch,i)=>{ const s = document.createElement('span'); s.textContent = ch; s.style.animationDelay = (i*.1)+'s'; el.appendChild(s); }); })();
@@ -634,7 +676,7 @@ function gameOver(){
   const isBest = score > best; if(isBest){ best = score; store.set('best', best); }
   $('finalScore').textContent = score; $('finalBest').textContent = best; $('finalGems').textContent = runGems;
   $('newBest').classList.toggle('hidden', !(isBest && score > 0));
-  const m = score >= 60 ? ['◆','ELMAS','#29f0ff'] : score >= 40 ? ['★','ALTIN','#ffd23d'] : score >= 20 ? ['★','GÜMÜŞ','#dfe6f0'] : score >= 10 ? ['★','BRONZ','#e0894a'] : ['✕','MADALYA YOK','#6c5a8c'];
+  const m = score >= 60 ? ['◆',tr('medal_diamond'),'#29f0ff'] : score >= 40 ? ['★',tr('medal_gold'),'#ffd23d'] : score >= 20 ? ['★',tr('medal_silver'),'#dfe6f0'] : score >= 10 ? ['★',tr('medal_bronze'),'#e0894a'] : ['✕',tr('medal_none'),'#6c5a8c'];
   $('medal').textContent = m[0]; $('medal').style.background = m[2]; $('medal').style.color = m[2]; $('medalName').textContent = m[1];
   $('medal').style.textShadow = 'none'; $('medal').firstChild && ($('medal').style.webkitTextFillColor = '#2a0b45');
   show('over');
@@ -646,6 +688,9 @@ function resumeGame(){ state = prevState; show(prevState === 'ready' ? 'ready' :
 function bindTap(el, fn){ el.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); fn(e); }); }
 bindTap($('playBtn'), () => { SFX.click(); vibe(15); toReady(); });
 bindTap($('skinBtn'), () => { SFX.click(); vibe(10); buildSkins(); show('skins'); });
+bindTap($('langBtn'), () => { SFX.click(); vibe(10); openLangs('menu'); });
+bindTap($('langRow'), () => { SFX.click(); vibe(10); openLangs('settings'); });
+bindTap($('langBack'), () => { SFX.click(); if(langReturn === 'settings'){ syncToggles(); show('settings'); } else toMenu(); });
 bindTap($('setBtn'), () => { SFX.click(); vibe(10); syncToggles(); show('settings'); });
 bindTap($('skinBack'), () => { SFX.click(); toMenu(); });
 bindTap($('setBack'), () => { SFX.click(); toMenu(); });
@@ -655,8 +700,8 @@ bindTap($('resumeBtn'), () => resumeGame());
 bindTap($('quitBtn'), () => { SFX.click(); toMenu(); });
 bindTap($('pauseBtn'), () => { SFX.click(); pauseGame(); });
 
-function syncToggles(){ document.querySelectorAll('.toggle').forEach(el => el.querySelector('.sw').classList.toggle('on', !!settings[el.dataset.k])); }
-document.querySelectorAll('.toggle').forEach(el => bindTap(el, () => {
+function syncToggles(){ document.querySelectorAll('.toggle[data-k]').forEach(el => el.querySelector('.sw').classList.toggle('on', !!settings[el.dataset.k])); }
+document.querySelectorAll('.toggle[data-k]').forEach(el => bindTap(el, () => {
   const k = el.dataset.k; settings[k] = !settings[k]; store.set('settings', settings); syncToggles();
   SFX.click(); if(k==='vibe' && settings.vibe) vibe(40); if(k==='shake' && settings.shake) shake(12,.3);
 }));
@@ -668,7 +713,7 @@ function buildSkins(){
     const d = document.createElement('div'); d.className = 'skin' + (i === skinIdx ? ' sel' : '');
     const pc = document.createElement('canvas'); pc.width = 128; pc.height = 128; d.appendChild(pc);
     const pctx = pc.getContext('2d'); pctx.scale(2.6, 2.6); drawBird(pctx, 26.5, 25, -.1, .5, sk, 0, false);
-    const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = sk.name; d.appendChild(nm);
+    const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = (tr('skins')||[])[i] || sk.name; d.appendChild(nm);
     const owned = unlocked.includes(i);
     if(!owned){ const l = document.createElement('div'); l.className = 'lock'; l.innerHTML = '🔒<span style="color:'+(gems>=sk.cost?'#29f0ff':'#ff6b9a')+'">◆ '+sk.cost+'</span>'; d.appendChild(l); }
     bindTap(d, () => {
@@ -694,7 +739,11 @@ addEventListener('keydown', e => { if(e.code === 'Space' || e.code === 'ArrowUp'
 window.onBack = function(){
   if(state === 'play' || state === 'ready') pauseGame();
   else if(state === 'pause') resumeGame();
-  else if(state === 'menu'){ if(NATIVE && NATIVE.exit) NATIVE.exit(); }
+  else if(state === 'menu'){
+    if(curScreen === 'langs' && langReturn === 'settings'){ syncToggles(); show('settings'); }
+    else if(curScreen !== 'menu') toMenu();
+    else if(NATIVE && NATIVE.exit) NATIVE.exit();
+  }
   else toMenu();
 };
 window.onAppPause = function(){ pauseGame(); if(ac) ac.suspend(); };
@@ -709,7 +758,7 @@ function frame(now){
   render();
   requestAnimationFrame(frame);
 }
-resize(); resetRun(); toMenu();
+applyLang(); resize(); resetRun(); toMenu();
 requestAnimationFrame(frame);
 </script>
 </body>

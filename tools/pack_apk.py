@@ -17,8 +17,8 @@ import zlib
 PACKAGE = "com.pirpir.game"
 ACTIVITY = "com.pirpir.game.MainActivity"
 LABEL = "Pırpır"
-VERSION_CODE = 1
-VERSION_NAME = "1.0"
+VERSION_CODE = 2
+VERSION_NAME = "1.1"
 MIN_SDK = 24
 TARGET_SDK = 34
 

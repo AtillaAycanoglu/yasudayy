@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds dist/pirpir.apk with only a JDK, Node+Playwright and Python 3 (no Android SDK needed).
+# Builds dist/glowbird.apk with only a JDK, Node+Playwright and Python 3 (no Android SDK needed).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 B="$ROOT/build"; T="$B/tools"; mkdir -p "$T" "$B/classes" "$B/stubs" "$ROOT/dist"
@@ -30,5 +30,5 @@ KS="${KEYSTORE:-$ROOT/android/release.p12}"; PW="${KEYSTORE_PASS:-pirpir123}"
 [ -f "$KS" ] || keytool -genkeypair -keystore "$KS" -storetype PKCS12 -storepass "$PW" -keypass "$PW" -alias pirpir \
   -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Pirpir, O=Pirpir, C=TR" >/dev/null 2>&1
 javac -d "$B/signer" -cp "$T/apksig-2.3.0.jar" "$ROOT/tools/Signer.java"
-java --add-exports java.base/sun.security.x509=ALL-UNNAMED --add-exports java.base/sun.security.pkcs=ALL-UNNAMED --add-exports java.base/sun.security.util=ALL-UNNAMED -cp "$B/signer:$T/apksig-2.3.0.jar" Signer "$B/unsigned.apk" "$ROOT/dist/pirpir.apk" "$KS" "$PW" pirpir
-ls -la "$ROOT/dist/pirpir.apk"
+java --add-exports java.base/sun.security.x509=ALL-UNNAMED --add-exports java.base/sun.security.pkcs=ALL-UNNAMED --add-exports java.base/sun.security.util=ALL-UNNAMED -cp "$B/signer:$T/apksig-2.3.0.jar" Signer "$B/unsigned.apk" "$ROOT/dist/glowbird.apk" "$KS" "$PW" pirpir
+ls -la "$ROOT/dist/glowbird.apk"

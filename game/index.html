@@ -319,7 +319,7 @@ function resetRun(){
 function flap(){
   if(!bird.alive) return;
   bird.vy = -470; bird.flapT = 1; bird.squash = 1;
-  SFX.flap(); vibe(8);
+  SFX.flap();
   const sk = SKINS[skinIdx];
   for(let i=0;i<(settings.fx?7:3);i++){
     const a = Math.PI*.5 + (Math.random()-.5)*1.2, s = 80+Math.random()*120;
@@ -365,7 +365,7 @@ function hit(){
   if(!bird.alive || bird.inv > 0) return;
   if(bird.shield){
     bird.shield = false; bird.inv = 1.4; bird.vy = -400;
-    SFX.shieldBreak(); vibe(90); shake(16, .45); flash(.55, '#29f0ff'); punch(.07); fx.hitstop = .06;
+    SFX.shieldBreak(); vibe(50); shake(9, .3); flash(.55, '#29f0ff'); punch(.07); fx.hitstop = .06;
     burst(bird.x, bird.y, 34, ['#29f0ff','#c8fcff','#fff'], 380, {life:.8, size:5, g:200, glow:true, shape:'s'});
     ring(bird.x, bird.y, '#29f0ff', 120, .5, 8);
     mEvent('shield', 1);
@@ -377,9 +377,9 @@ function hit(){
 function die(){
   if(!bird.alive) return;
   bird.alive = false; state = 'dead'; deadTimer = 0;
-  SFX.hit(); setTimeout(()=>SFX.die(), 120); vibe(250);
+  SFX.hit(); setTimeout(()=>SFX.die(), 120); vibe(120);
   fx.hitstop = .12; fx.timeScale = .25; fx.chroma = 1; fx.vignette = 1;
-  shake(26, .7); flash(1, '#fff'); punch(.09);
+  shake(15, .5); flash(1, '#fff'); punch(.09);
   const sk = SKINS[skinIdx];
   burst(bird.x, bird.y, 46, [sk.body, sk.wing, sk.belly, '#fff', '#ff3d9a'], 420, {life:1.1, size:6, g:500, glow:true});
   burst(bird.x, bird.y, 18, ['#fff'], 300, {life:.9, size:5, g:600, shape:'f'});
@@ -390,7 +390,7 @@ function die(){
 
 function addScore(p){
   score++; scorePop = 1; combo++;
-  SFX.score(score); vibe(12);
+  SFX.score(score);
   const top = p.cy - p.gap/2, bot = p.cy + p.gap/2;
   const dist = Math.min(Math.abs(bird.y - bird.r - top), Math.abs(bot - (bird.y + bird.r)));
   burst(p.x + p.w, bird.y, 10, ['#ffd23d','#fff','#29f0ff'], 200, {life:.5, size:4, g:0, glow:true});
@@ -398,15 +398,15 @@ function addScore(p){
   if(dist < 16){
     p.near = true; p.glow = 1;
     popup(bird.x + 30, bird.y - 30, tr('near'), '#ff3d9a', 26);
-    SFX.near(); shake(7, .2); flash(.25, '#ff3d9a'); punch(.04);
+    SFX.near(); shake(4, .15); flash(.25, '#ff3d9a'); punch(.04);
     runNear++; mEvent('near', 0, runNear);
   }
   if(score % 10 === 0){
     popup(W/2, H*.32, score + '!', '#ffd23d', 64);
-    shake(10, .35); flash(.35, '#ffd23d'); punch(.06);
+    shake(5, .25); flash(.35, '#ffd23d'); punch(.06);
     burst(W/2, H*.32, 40, ['#ffd23d','#ff3d9a','#29f0ff','#fff'], 420, {life:1, size:6, g:300, glow:true});
     SFX.best();
-  } else shake(3, .12);
+  }
   mEvent('score', 0, score); mEvent('total', 1);
   if(score > best && best > 0 && !newBestFlag){ newBestFlag = true; popup(W/2, H*.42, tr('newbest'), '#29f0ff', 36); flash(.3, '#29f0ff'); }
 }
@@ -461,7 +461,7 @@ function update(dt){
       trail(gdt);
       if(bird.y - bird.r < -40) bird.y = -40 + bird.r, bird.vy = Math.max(bird.vy, 0);
       if(bird.y + bird.r > H - GROUND){ bird.y = H - GROUND - bird.r;
-        if(bird.shield || bird.inv > 0){ hit(); bird.vy = -520; shake(6,.15); burst(bird.x, bird.y+bird.r, 12, ['#29f0ff','#fff'], 200, {life:.4, size:4}); }
+        if(bird.shield || bird.inv > 0){ hit(); bird.vy = -520; shake(4,.12); burst(bird.x, bird.y+bird.r, 12, ['#29f0ff','#fff'], 200, {life:.4, size:4}); }
         else die(); }
       bird.inv = Math.max(0, bird.inv - gdt);
       if(bird.magnet > 0){ bird.magnet = Math.max(0, bird.magnet - gdt); }
@@ -491,7 +491,7 @@ function update(dt){
       } else {
         if(playing){ h.ph = (h.ph + gdt) % 2.2; }
         const wasOn = h.on; h.on = h.ph < .75; h.warn = h.ph > 1.7;
-        if(h.on && !wasOn && h.x < W && h.x + h.w > 0){ SFX.zap(); if(h.x < W*.8) shake(2, .08); }
+        if(h.on && !wasOn && h.x < W && h.x + h.w > 0){ SFX.zap(); }
         if(playing){
           if(h.on && bird.x + bird.r*.8 > h.x && bird.x - bird.r*.8 < h.x + h.w && Math.abs(bird.y - h.y) < 5 + bird.r*.72) hit();
           if(!h.passed && h.x + h.w < bird.x - bird.r){ h.passed = true; if(bird.alive) mEvent('lasers', 1); }
@@ -507,7 +507,7 @@ function update(dt){
           pw.taken = true;
           if(pw.k === 'shield'){ bird.shield = true; } else { bird.magnet = 7; }
           const col = pw.k === 'shield' ? '#29f0ff' : '#ff3d9a';
-          SFX.power(); vibe(30); punch(.05); flash(.3, col); shake(5, .15);
+          SFX.power(); vibe(20); punch(.05); flash(.3, col);
           ring(pw.x, pw.y, col, 90, .45, 6); burst(pw.x, pw.y, 24, [col, '#fff', '#ffd23d'], 300, {life:.7, size:5, g:0, glow:true});
           popup(bird.x, bird.y - 46, tr(pw.k), col, 30);
           mEvent('power', 1);
@@ -524,14 +524,14 @@ function update(dt){
       if(!g.taken && bird.alive){
         const dx = g.x - bird.x, dy = g.y - bird.y;
         if(dx*dx + dy*dy < 32*32){ g.taken = true; runGems++; $('gemCount').textContent = runGems; mEvent('gems', 0, runGems);
-          SFX.gem(); vibe(15); burst(g.x, g.y, 16, ['#29f0ff','#fff','#8a5cff'], 240, {life:.6, size:4, g:0, glow:true, shape:'s'});
+          SFX.gem(); burst(g.x, g.y, 16, ['#29f0ff','#fff','#8a5cff'], 240, {life:.6, size:4, g:0, glow:true, shape:'s'});
           ring(g.x, g.y, '#29f0ff', 60, .35, 4); popup(g.x, g.y - 20, '+1 ◆', '#29f0ff', 22); punch(.02); }
       }
     }
     gemsArr = gemsArr.filter(g => g.x > -40 && !g.taken);
     if(state === 'dead'){
       deadTimer += dt;
-      if(bird.y + bird.r > H - GROUND){ bird.y = H - GROUND - bird.r; if(bird.vy > 200){ bird.vy *= -.35; shake(8,.2); burst(bird.x, bird.y+bird.r, 12, ['#fff','#8a5cff'], 180, {life:.5, size:4}); } else bird.vy = 0; }
+      if(bird.y + bird.r > H - GROUND){ bird.y = H - GROUND - bird.r; if(bird.vy > 200){ bird.vy *= -.35; shake(4,.15); burst(bird.x, bird.y+bird.r, 12, ['#fff','#8a5cff'], 180, {life:.5, size:4}); } else bird.vy = 0; }
       if(deadTimer > 1.1) gameOver();
     }
   }
@@ -857,7 +857,7 @@ function mEvent(type, add, runValue){
       gems += m.reward; mDone++; mNew++; mLevels[type] = (mLevels[type] || 0) + 1;
       store.set('gems', gems); store.set('mdone', mDone); store.set('mnew', mNew); store.set('mlevels', mLevels);
       missions[i] = newMission(missions.map(x => x.type));
-      SFX.mission(); vibe(70); flash(.35, '#ffd23d'); shake(6, .2);
+      SFX.mission(); vibe(40); flash(.35, '#ffd23d');
       popup(W/2, H*.22, tr('mission_done'), '#ffd23d', 28);
       setTimeout(() => popup(W/2, H*.22 + 34, '+' + m.reward + ' ◆', '#29f0ff', 26), 250);
       burst(W/2, H*.22, 30, ['#ffd23d','#29f0ff','#ff3d9a','#fff'], 360, {life:.9, size:5, g:250, glow:true});
@@ -894,7 +894,7 @@ function buildLangs(){
   Object.keys(LANGS).forEach(code => {
     const b = document.createElement('div'); b.className = 'lang' + (code === lang ? ' sel' : ''); b.textContent = LANGS[code].native;
     if(LANGS[code].rtl) b.dir = 'rtl';
-    b.addEventListener('click', () => { lang = code; store.set('lang', lang); applyLang(); buildLangs(); SFX.click(); vibe(10); });
+    b.addEventListener('click', () => { lang = code; store.set('lang', lang); applyLang(); buildLangs(); SFX.click(); });
     grid.appendChild(b);
   });
 }
@@ -922,23 +922,23 @@ function gameOver(){
   $('medal').textContent = m[0]; $('medal').style.background = m[2]; $('medal').style.color = m[2]; $('medalName').textContent = m[1];
   $('medal').style.textShadow = 'none'; $('medal').firstChild && ($('medal').style.webkitTextFillColor = '#2a0b45');
   show('over');
-  if(isBest && score > 0){ SFX.best(); setTimeout(()=>{ burst(W/2, H*.3, 60, ['#ffd23d','#ff3d9a','#29f0ff','#fff'], 520, {life:1.4, size:7, g:500, glow:true}); shake(8, .3); }, 300); }
+  if(isBest && score > 0){ SFX.best(); setTimeout(()=>{ burst(W/2, H*.3, 60, ['#ffd23d','#ff3d9a','#29f0ff','#fff'], 520, {life:1.4, size:7, g:500, glow:true}); shake(5, .25); }, 300); }
 }
 function pauseGame(){ if(state !== 'play' && state !== 'ready') return; prevState = state; state = 'pause'; show('pause'); }
 function resumeGame(){ state = prevState; show(prevState === 'ready' ? 'ready' : null); SFX.click(); }
 
 function bindTap(el, fn){ el.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); fn(e); }); }
-bindTap($('playBtn'), () => { SFX.click(); vibe(15); toReady(); });
-bindTap($('skinBtn'), () => { SFX.click(); vibe(10); buildSkins(); show('skins'); });
-bindTap($('langBtn'), () => { SFX.click(); vibe(10); openLangs('menu'); });
-bindTap($('langRow'), () => { SFX.click(); vibe(10); openLangs('settings'); });
+bindTap($('playBtn'), () => { SFX.click(); toReady(); });
+bindTap($('skinBtn'), () => { SFX.click(); buildSkins(); show('skins'); });
+bindTap($('langBtn'), () => { SFX.click(); openLangs('menu'); });
+bindTap($('langRow'), () => { SFX.click(); openLangs('settings'); });
 bindTap($('langBack'), () => { SFX.click(); if(langReturn === 'settings'){ syncToggles(); show('settings'); } else toMenu(); });
-bindTap($('setBtn'), () => { SFX.click(); vibe(10); syncToggles(); show('settings'); });
+bindTap($('setBtn'), () => { SFX.click(); syncToggles(); show('settings'); });
 bindTap($('skinBack'), () => { SFX.click(); toMenu(); });
-bindTap($('missionBtn'), () => { SFX.click(); vibe(10); mNew = 0; store.set('mnew', 0); buildMissions(); show('missions'); });
+bindTap($('missionBtn'), () => { SFX.click(); mNew = 0; store.set('mnew', 0); buildMissions(); show('missions'); });
 bindTap($('missionBack'), () => { SFX.click(); toMenu(); });
 bindTap($('setBack'), () => { SFX.click(); toMenu(); });
-bindTap($('againBtn'), () => { SFX.click(); vibe(15); toReady(); });
+bindTap($('againBtn'), () => { SFX.click(); toReady(); });
 bindTap($('homeBtn'), () => { SFX.click(); toMenu(); });
 bindTap($('resumeBtn'), () => resumeGame());
 bindTap($('quitBtn'), () => { SFX.click(); toMenu(); });
@@ -961,7 +961,7 @@ function buildSkins(){
     const owned = unlocked.includes(i);
     if(!owned){ const l = document.createElement('div'); l.className = 'lock'; l.innerHTML = '🔒<span style="color:'+(gems>=sk.cost?'#29f0ff':'#ff6b9a')+'">◆ '+sk.cost+'</span>'; d.appendChild(l); }
     bindTap(d, () => {
-      if(owned){ skinIdx = i; store.set('skin', i); SFX.click(); vibe(10); buildSkins(); }
+      if(owned){ skinIdx = i; store.set('skin', i); SFX.click(); buildSkins(); }
       else if(gems >= sk.cost){ gems -= sk.cost; store.set('gems', gems); unlocked.push(i); store.set('unlocked', unlocked); skinIdx = i; store.set('skin', i);
         SFX.gem(); SFX.best(); vibe(60); shake(10,.3); flash(.4,'#29f0ff'); buildSkins(); }
       else { SFX.hit(); vibe(30); d.animate([{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'none'}], {duration:200}); }

@@ -17,8 +17,8 @@ import zlib
 PACKAGE = "com.pirpir.game"
 ACTIVITY = "com.pirpir.game.MainActivity"
 LABEL = "Glowbird"
-VERSION_CODE = 3
-VERSION_NAME = "1.2"
+VERSION_CODE = 4
+VERSION_NAME = "1.3"
 MIN_SDK = 24
 TARGET_SDK = 34
 
